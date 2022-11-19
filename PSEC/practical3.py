@@ -86,6 +86,7 @@ for i in range(len(scores)):
  if 80 <= scores[i]:
   print("Scores that qualify for 'A' grade are:", sorted(scores[i]))
 
+#Q7b
 
 #Q9
 
