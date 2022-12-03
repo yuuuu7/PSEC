@@ -80,13 +80,14 @@ s = replace_substr(s1,s2,4)
 print(s) 	# output = the lazy brown fox """
 
 #Q7a
-scores = [80, 39, 79, 81, 79, 70, 84, 57, 66, 86]
+"""scores = [80, 39, 79, 81, 79, 70, 84, 57, 66, 86]
 print("The 10 Students scored", scores)
 for i in range(len(scores)):
  if 80 <= scores[i]:
-  print("Scores that qualify for 'A' grade are:", sorted(scores[i]))
+  print("Scores that qualify for 'A' grade are:", sorted(scores[i]))"""
 
 #Q7b
+
 
 #Q9
 
@@ -113,3 +114,41 @@ for i in range(3):
 
 print(fibs(5)) """
 
+#Q12
+
+#create dictionary
+services={}
+
+#get input
+s = input("Please enter service:port that were found to be open separated by '|' \n")
+pairs = s.split(sep='|')
+
+
+#split into service and port
+
+for pair in pairs:
+  svc=pair.split(':')
+  services[svc[0].strip()]=int(svc[1].strip())
+
+
+print("\nThese are the ports found and their corresponding services:")
+for service, port in services.items():
+  print(f"{port}:{service}")
+
+s = input('''
+ 1) Search for open port
+ 2) Search for service running 
+ 3) Update Dictionary
+ Please enter request: ''')
+
+if s == '2':
+  s = input('Enter Service: ').upper()
+  if s in services:
+     print(f'{s} is running on port {services[s]}')
+  else:
+     print(f'{s} is not running on any port')
+elif s == '1':
+  s = input('Enter Port: ')
+elif s == '3':
+  s=input('Enter service:port: ')
+  print(services)
