@@ -109,5 +109,9 @@ while counter == 0:
 
  elif userChoice == 3:
   print("\n" + "Thank you for playing!")
+<<<<<<< HEAD
   break
 
+if login is 2:
+  passwd = input("Please enter the admin password: ")
+    
