@@ -172,8 +172,40 @@ for num, osPort in list(enumerate(zip(os,portlist),1)):
   osPort = list(osPort)
   print(f'{num}: Ping port {osPort[1]} on {osPort[0]} OS for {portlist[osPort[1]]}')'''
 
-#Q15
 
-rec = {"hospital": {}}
-rec["hospital"] = {"AMK": {}, "SGH": {}}
-print(rec)
+
+
+#MOCK MST Q3
+def rate(x):
+  if no_units <= 500:
+      return no_units*0.01*x
+  elif no_units < 1001:
+      return (no_units - 500)*0.02*x + 500*0.01*x
+  elif no_units > 1000:
+      return (500*0.01 + 500*0.02 + (no_units-1000)*0.03)*x
+
+
+
+hdb_factor = 1
+condo_factor = 1.1
+landed_factor = 1.2
+
+
+
+counter = 0
+while counter == 0:
+    dwelling_type = input("Choose: ")
+    no_units = int(input("Enter your number of units: "))
+    pay_amt = 0
+    if dwelling_type == '1':
+      pay_amt = rate(hdb_factor)
+      print(f"Total amount to pay is: ${pay_amt:.2f}")
+    elif dwelling_type == '2':
+      pay_amt = rate(condo_factor)
+      print(f"Total amount to pay is: ${pay_amt:.2f}")
+    elif dwelling_type == '3':
+      pay_amt = rate(landed_factor)
+      print(f"Total amount to pay is: ${pay_amt:.2f}")
+
+
+
