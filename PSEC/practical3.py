@@ -115,40 +115,65 @@ for i in range(3):
 print(fibs(5)) """
 
 #Q12
+'''
+open_ports = input("Enter the service:port found to be open separated by '|': ")
 
-#create dictionary
-services={}
-
-#get input
-s = input("Please enter service:port that were found to be open separated by '|' \n")
-pairs = s.split(sep='|')
-
-
-#split into service and port
-
-for pair in pairs:
-  svc=pair.split(':')
-  services[svc[0].strip()]=int(svc[1].strip())
-
+services_ports = open_ports.replace(" ", "").split("|")
 
 print("\nThese are the ports found and their corresponding services:")
-for service, port in services.items():
-  print(f"{port}:{service}")
+for item in services_ports:
+    service, port = item.split(":")
+    print(f"{service} on port {port}")
 
-s = input('''
+s = input('
  1) Search for open port
  2) Search for service running 
  3) Update Dictionary
- Please enter request: ''')
+ Please enter request: ')
+if(s == '1'):
+    open = []
+    s1 = input("Enter the port number: ")
+    
+    for item in services_ports:
+        service, port = item.split(":")
+        if(port==s1):
+          open.append(port)
+    if(len(open)):
+      print("Port", open, "is open")
+    else:
+      print(f"Sorry, Port {s1} is not open")
+          
+elif(s == '2'):
+    open = []
+    s2 = input("Enter the service name: ")
+    for item in services_ports:
+     service, port = item.split(":")
+     if(service == s2):
+      open.append(service)
+     
+    if(len(open)):
+     print("service",open, "is open")
+    else:
+     print(f"Service {s2} is not running")
 
-if s == '2':
-  s = input('Enter Service: ').upper()
-  if s in services:
-     print(f'{s} is running on port {services[s]}')
-  else:
-     print(f'{s} is not running on any port')
-elif s == '1':
-  s = input('Enter Port: ')
-elif s == '3':
-  s=input('Enter service:port: ')
-  print(services)
+    
+
+elif(s == '3'):
+    s3 = input('Enter service:port: ')
+    services_ports.append(s3)
+    print(services_ports)
+'''
+
+#Q13
+'''os = ['Windows10', 'Debian', 'Ubuntu','Redhat']
+portlist = {25:"SMTP", 80:"HTTP", 443:"HTTPS", 23:"TELNET"}
+
+for num, osPort in list(enumerate(zip(os,portlist),1)):
+  osPort = list(osPort)
+  print(f'{num}: Ping port {osPort[1]} on {osPort[0]} OS for {portlist[osPort[1]]}')'''
+
+#Q15
+
+rec = {"hospital": {}}
+rec["hospital"] = {"AMK": {}, "SGH": {}}
+print(rec)
