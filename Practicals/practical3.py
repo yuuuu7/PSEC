@@ -287,3 +287,30 @@ while counter == 0:
 
 
 
+stock = { 
+  'mb' : 6,
+  'cpu' : 0
+}
+
+prices = {
+  'mb' : 225,
+  'cpu' : 155
+}
+
+
+def compute_bill(components):
+ total = 0
+ for part in components:
+  price=prices[part]
+  if stock[part] > 0:
+    total=total + price
+    stock[part] = stock[part] - 1
+  else:
+    print(f'Warning, no stock for {part}: ${price}')
+
+ return total
+
+shopping_cart = ['mb', 'cpu']
+total = compute_bill(shopping_cart)
+
+print(f'Total: ${total:.2f}')

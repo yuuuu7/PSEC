@@ -1,9 +1,16 @@
-use json*
-
-word_list = {
-    "hefty": "Something that is of considerable weight or size" ,
-    "lambent": "moving about as if touching lightly; flickering; glowing" ,
-    "sugar": "an Ingredient or source of food that tastes sweet",
-    "deer": "It has large ears, short tails, and long, slender legs",
-    "zebra": "African equines with distinctive black-and-white striped coats",
-            }
+[
+    {
+        "word": "dish",
+        "meaning": "an open, relatively shallow container of pottery, glass, metal, wood, etc., used for various purposes, especially for holding or serving food.",
+        "difficulty": "Simple",
+        "type": "Word",
+        "enabled": "on"
+    },
+    {
+        "word": "depend",
+        "meaning": "to rely; place trust (usually followed by on or upon):",
+        "difficulty": "Simple",
+        "type": "Word",
+        "enabled": "on"
+    }
+]
