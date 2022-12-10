@@ -172,3 +172,58 @@ def menu():
 menu()
 """
 
+'''def option_1():
+  user_number = int(input("Enter a number: "))
+  if(user_number%2 == 0):
+   print("The number", user_number, "is even")
+  else:
+   print("The number", user_number, "is odd")
+
+def option_2():
+  user_number = int(input("Enter first number: "))
+  user_number_2 = int(input("Enter a second number: "))
+  if(user_number - user_number_2 > 0):
+   print(user_number, "is bigger!")
+  else:
+   print(user_number_2, "is bigger!")
+   
+def option_3():
+ counter = 1
+ sum = 0
+ while counter == 1:
+    sum_number = input("Pls enter a number or Q to stop: ")
+    if sum_number=="Q":
+        break
+    else: 
+        sum += int(sum_number)
+        print(f"Current total is {sum}")
+print(f"Final sum is {sum}")
+
+def option_4():
+  x = int(input("Enter a number: "))
+  y = int(input("Enter a second number: "))
+  string = ''
+  for i in range(x,y+1):
+        
+   if x%2==0:
+    string += str(x)+"\t"
+    x+=1
+    print(string)   
+    
+
+def main_menu():
+  print("************* \n ST2414 PSEC Practical 2 \n ******************")
+  user_choice = input("\n\t 1. Determine odd or even \n\t 2. Determine bigger number \n\t 3. Find sum of numbers \n\t 4. Display even numbers, inclusive \n *********************** \n Enter a Choice: ")
+  
+  if user_choice == '1':
+   option_1()
+  if user_choice == '2':
+   option_2()
+  if user_choice == '3':
+   option_3()
+  if user_choice == '4':
+   option_4()
+
+
+main_menu()
+'''

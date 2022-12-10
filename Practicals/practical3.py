@@ -285,7 +285,12 @@ while counter == 0:
       pay_amt = rate(landed_factor)
       print(f"Total amount to pay is: ${pay_amt:.2f}") '''
 
+'''list_1 = ["your", "mom"]
+dict_1 = {'ronaldo': '7', 'messi': 10}
 
+print(dict_1.get("ronaldo"))
+for i, items in dict_1.items():
+  print(f'Name: {i}')'''
 
 stock = { 
   'mb' : 6,
