@@ -1,13 +1,15 @@
-gpa_grades=['A','B','C']
-gpa_points=['4.0', '3.5', '3.0']
+# Open the "dictionary.txt" file and read the words into a dictionary
+# The file should have the format "word:definition" for each line
+with open("wordlist.txt") as file:
+    words = {}
+    for line in file:
+        word = line
 
-my_dict={}
+# Use the random.choice() function to select a random word
+import random
+word = random.choice(list(words))
 
-while len(gpa_grades) > 0:
- for gpa,gpa_pt in my_dict.items():
-  for i in gpa_grades:
-    gpa = gpa_grades[i]
-    gpa_pt = gpa_points[i]
-    my_dict.update(gpa,gpa_pt)
+# Use the selected word in your program
+print("The random word is:", word)
 
-print(my_dict)
+
