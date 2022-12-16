@@ -21,7 +21,29 @@ def user_stats(file_name):
    for line in file:
     print(line)
 
-with open("game_settings.txt") as f:
+def print_meaning_word(selected_word):
+
+# Open the wordlist file and parse the contents
+ with open("wordlist.txt") as f:
+    wordlist = json.loads(f.read())
+
+# Find the dictionary with the selected word
+ selected_dictionary = None
+ for dictionary in wordlist:
+    if dictionary['word'] == selected_word:
+        selected_dictionary = dictionary
+        break
+
+# If a dictionary was found, print the word and meaning
+ if selected_dictionary:
+    word = selected_dictionary['word']
+    meaning = selected_dictionary['meaning']
+    print(f"{word}: {meaning}")
+ else:
+    print("Word not found.")
+
+
+with open("game-settings.txt") as f:
     settings = json.load(f)
 
 # Get the game settings
@@ -44,6 +66,22 @@ while (session < 3):
       print("\n" + "HANGMAN" + "\n")
       print("Player: ", userName)
       print(session, 'of 3')
+      # Open the wordlist file and parse the contents
+      with open("wordlist.txt") as f:
+       wordlist = json.loads(f.read())
+
+      # Choose a random word from the wordlist
+      selected_dictionary = random.choice(wordlist)
+
+      # Extract the word and meaning from the dictionary
+      word = selected_dictionary['word']
+      meaning = selected_dictionary['meaning']
+      while True:
+        userGuess = input("Guess a letter: ")
+        if user
+        for i in range(max_incorrect_guesses):
+          print("You have used", i,"/", max_incorrect_guesses, "of max number of guesses")
+
       exit_input = int(input("Press '0' to exit: "))
       if exit_input == 0:
         session = session
@@ -51,11 +89,11 @@ while (session < 3):
       # The input is not a non-empty string, so it is invalid
       print("You cannot have Empty Spaces and Only-Numbers for your Username!")
 
-    points = 1000
+    '''points = 1000
     date = '29/10/2022'
     with open('game_logs.txt', 'a') as f:
      info = "{}\t{}\t{}\n".format(userName, points, date_now)
-     f.write(info)
+     f.write(info)'''
 
 
  

@@ -1,12 +1,4 @@
-wordlist = {
-"word": "dish",
-"meaning": "an open, relatively shallow container of pottery, glass, metal, wood, etc., used for various purposes, especially for holding or serving food.",
-"difficulty": "Simple",
-"type": "Word",
-"enabled": "on",
-"word": "depend",
-"meaning": "to rely; place trust (usually followed by on or upon):",
-"difficulty": "Simple",
-"type": "Word",
-"enabled": "on"
-}
+[
+ {"word": "Simple", "meaning": "Difficulty"},
+ {"word": "enabled", "meaning": "on"}
+]

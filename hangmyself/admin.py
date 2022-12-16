@@ -1,15 +1,17 @@
-# Open the "dictionary.txt" file and read the words into a dictionary
-# The file should have the format "word:definition" for each line
-with open("wordlist.txt") as file:
-    words = {}
-    for line in file:
-        word = line
 
-# Use the random.choice() function to select a random word
+
+import json
 import random
-word = random.choice(list(words))
 
-# Use the selected word in your program
-print("The random word is:", word)
+# Open the wordlist file and parse the contents
+with open("wordlist.txt") as f:
+    wordlist = json.loads(f.read())
 
+# Choose a random word from the wordlist
+selected_dictionary = random.choice(wordlist)
 
+# Extract the word and meaning from the dictionary
+word = selected_dictionary['word']
+meaning = selected_dictionary['meaning']
+
+print("The word to guess was: " , word)
