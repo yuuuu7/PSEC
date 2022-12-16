@@ -78,7 +78,7 @@ while (session < 3):
       meaning = selected_dictionary['meaning']
       while True:
         userGuess = input("Guess a letter: ")
-        if user
+        if userGuess != 
         for i in range(max_incorrect_guesses):
           print("You have used", i,"/", max_incorrect_guesses, "of max number of guesses")
 
