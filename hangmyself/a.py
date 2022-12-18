@@ -42,6 +42,10 @@ def print_meaning_word(selected_word):
  else:
     print("Word not found.")
 
+def update_gamelogs():
+  with open('game_logs.txt', 'a') as f:
+    info = "{}\t{}\t{}\n".format(userName, points, date_now)
+    f.write(info)
 
 with open("game-settings.txt") as f:
     settings = json.load(f)
@@ -66,6 +70,7 @@ while (session < 3):
       print("\n" + "HANGMAN" + "\n")
       print("Player: ", userName)
       print(session, 'of 3')
+
       # Open the wordlist file and parse the contents
       with open("wordlist.txt") as f:
        wordlist = json.loads(f.read())
@@ -76,24 +81,35 @@ while (session < 3):
       # Extract the word and meaning from the dictionary
       word = selected_dictionary['word']
       meaning = selected_dictionary['meaning']
-      while True:
-        userGuess = input("Guess a letter: ")
-        if userGuess != 
-        for i in range(max_incorrect_guesses):
-          print("You have used", i,"/", max_incorrect_guesses, "of max number of guesses")
 
+      i=0
+      points = 0
+      while i < max_incorrect_guesses:
+         userGuess = input("Guess a letter: ")
+
+         if userGuess != word:
+           if i < max_incorrect_guesses:
+            i+=1
+            print("You have used", i,"/", max_incorrect_guesses, "of max number of guesses")
+
+           if i == max_incorrect_guesses:
+            print("You have used all of your attempts, Sorry!")
+            update_gamelogs()
+            i = 1000
+
+         elif userGuess == word:
+          print(f"Correct! The word is {word} and it means {meaning} \n")
+          points += 100
+          i = 1000
+          update_gamelogs()
+
+      print(f"Thanks for playing! You have earned this many points: {points} \n")
       exit_input = int(input("Press '0' to exit: "))
       if exit_input == 0:
         session = session
     elif(userName is int):
       # The input is not a non-empty string, so it is invalid
       print("You cannot have Empty Spaces and Only-Numbers for your Username!")
-
-    '''points = 1000
-    date = '29/10/2022'
-    with open('game_logs.txt', 'a') as f:
-     info = "{}\t{}\t{}\n".format(userName, points, date_now)
-     f.write(info)'''
 
 
  
