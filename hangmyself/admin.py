@@ -1,40 +1,8 @@
-import json
-import random
+import ast
 
-with open("wordlist.txt") as f:
-       wordlist = json.loads(f.read())
+with open('hangman_art.txt') as f:
+    hangman_art = ast.literal_eval(f.read())
 
-      # Choose a random word from the wordlist
-       selected_dictionary = random.choice(wordlist)
-
-      # Extract the word and meaning from the dictionary
-       word = selected_dictionary['word']
-       meaning = selected_dictionary['meaning']
-
-    # Set up the game
-guesses = []
-max_guesses = 6
-
-    # Main game loop
-while True:
-        print(f'Word: {" ".join([c if c in guesses else "_" for c in word])}')
-        print(f'Guesses: {guesses}')
-
-        # Get the player's next guess
-        guess = input('Enter your guess: ')
-
-        # Update the game state based on the guess
-        if guess in word:
-            guesses.append(guess)
-        else:
-            max_guesses -= 1
-
-        # Check if the player has won or lost
-        if all(c in guesses for c in word):
-            print('You win!')
-            break
-        elif max_guesses == 0:
-            print('You lose!')
-            break
-
-
+# Now you can use the hangman_art list in your game just like in the previous example
+stage = 0
+print(hangman_art[stage])
