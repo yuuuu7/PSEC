@@ -44,6 +44,8 @@ number_of_top_players = settings['number of top players']
 date_now = datetime.date.today()
 
 session = 0
+counter = 0
+data = {}
 while True:
 
   print("\n" + "\t" + "H A N G M A N" + "\n" +"\n" + "  Welcome to The Hangman Game !")
@@ -52,7 +54,28 @@ while True:
   if userChoice == 1:
     while userChoice ==1:
       session += 1
-      userName = input("\n" + "Please enter your name:")
+      data = {}
+      counter = 0
+      while counter == 0:
+        userName = input("\n" + "Please enter your name:")
+        # Create an empty dictionary to store the data
+        with open('game_logs.txt', 'r') as f:
+          # Read the file line by line
+          for line in f:
+            # Split the line into fields
+            fields = line.split(' ')
+            # Add the data to the dictionary, using the username as the key
+            data[fields[0]] = fields[1:]
+
+        # Check if the username we are looking for exists in the dictionary
+        if userName in data:
+          # If it does, the username already exists
+          print('Username already exists, please try another Username instead!')
+          counter = 0
+        else:
+          break
+
+
       
       with open("wordlist.txt") as f:
         wordlist = json.loads(f.read())
@@ -118,6 +141,7 @@ while True:
 
         if exit_input.lower() == 'y' and session < 3:
           userChoice = 1
+          counter = 0
         else:
           break
 
