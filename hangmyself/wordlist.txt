@@ -1,4 +1,14 @@
 [
- {"word": "Simple", "meaning": "Difficulty"},
- {"word": "enabled", "meaning": "on"}
+    {
+        "word": "simple",
+        "meaning": "difficulty"
+    },
+    {
+        "word": "enabled",
+        "meaning": "on"
+    },
+    {
+        "word": "hello",
+        "meaning": "a form of greeting"
+    }
 ]

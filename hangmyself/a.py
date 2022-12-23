@@ -46,13 +46,14 @@ date_now = datetime.date.today()
 session = 0
 counter = 0
 data = {}
+stage=6
 while True:
 
-  print("\n" + "\t" + "H A N G M A N" + "\n" +"\n" + "  Welcome to The Hangman Game !")
+  print(" _    _              _   _    _____   __  __              _   _ \n| |  | |     /\     | \ | |  / ____| |  \/  |     /\     | \ | |\n| |__| |    /  \    |  \| | | |  __  | \  / |    /  \    |  \| |\n|  __  |   / /\ \   | . ` | | | |_ | | |\/| |   / /\ \   | . ` |\n| |  | |  / ____ \  | |\  | | |__| | | |  | |  / ____ \  | |\  |\n|_|  |_| /_/    \_\ |_| \_|  \_____| |_|  |_| /_/    \_\ |_| \_|")
+  print_hangman_art()
   userChoice = int(input("\n" + "\t" + "1. Play Hangman" + "\n" + "\t" + "2. Display the top 5 players" + "\n" + "\t" + "3. Quit" + "\n" + "\n" + "  >>"))
 
   if userChoice == 1:
-    while userChoice ==1:
       session += 1
       data = {}
       counter = 0
@@ -89,12 +90,13 @@ while True:
 
         i=0
         points = 0
+        max_points = 30
         guesses = []
         wrong_guesses = []
         stage = 0
         counter = 0
         counter2 = 0
-        while(session <= 3):
+        while(userChoice == 1 ):
 
           print("\n" + "HANGMAN" + "\n")
           print("Player: ", userName)
@@ -111,12 +113,14 @@ while True:
             print(f'Incorrect letters: {wrong_guesses}', '(', counter, ')\n')
             print("You have used", i,"/", max_incorrect_guesses, "of max number of incorrect guesses\n")
 
-          userGuess = input("Guess a letter: ")
+          userGuess = input("Guess a letter: ").lower().strip()
                         
 
           if userGuess in word:
             counter2 = 0
             guesses.append(userGuess)
+            if points >= max_points:
+              points += 2
           elif userGuess not in word:
             i+=1
             counter += 1
@@ -131,7 +135,6 @@ while True:
           if all([c in guesses for c in word]):
             print("\nCongratulations! You got the word right!\n")
             print(f"The word was: {word}. It means {meaning}\n")
-            points += 100 #testing points system only
             update_gamelogs()
             break
 
