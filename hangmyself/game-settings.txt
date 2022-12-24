@@ -1,5 +1,5 @@
 {
-    "number of attempts": 6,
-    "number of words": 3,
-    "number of top players": 0
+  "number of attempts": 6,
+  "number of words": 3,
+  "number of top players": 0
 }

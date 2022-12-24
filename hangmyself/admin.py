@@ -149,7 +149,7 @@ def word_settings():
       return False
 
 def change_settings():
-
+  
     with open("game-settings.txt", "r") as f:
       # Parse the JSON string in the file
       data = json.loads(f.read())
@@ -171,7 +171,6 @@ def change_settings():
             data['number of top players'] = new_players
             print("\nChanges made successfully!")
         elif choice == 4:
-            # Break out of the loop
             break
         else:
             print("\nInvalid choice!")

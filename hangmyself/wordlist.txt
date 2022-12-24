@@ -1,14 +1,82 @@
 [
     {
-        "word": "simple",
-        "meaning": "difficulty"
+        "word": "abed",
+        "meaning": "in bed"
     },
     {
-        "word": "enabled",
-        "meaning": "on"
+        "word": "bell",
+        "meaning": "a device that makes a ringing sound when struck or when electrical circuit is completed"
     },
     {
-        "word": "hello",
-        "meaning": "a form of greeting"
+        "word": "bump",
+        "meaning": "a collision in which two or more objects strike together"
+    },
+    {
+        "word": "care",
+        "meaning": "the provision of what is necessary for the health, welfare, maintenance, and protection of someone or something"
+    },
+    {
+        "word": "card",
+        "meaning": "a flat, thin piece of stiff paper, cardboard, or plastic, especially one used for writing or printing on"
+    },
+    {
+        "word": "door",
+        "meaning": "a hinged, sliding, or revolving barrier at the entrance to a building, room, or vehicle, or in the framework of a cupboard"
+    },
+    {
+        "word": "fist",
+        "meaning": "a hand with the fingers clenched in the palm (as for hitting)"
+    },
+    {
+        "word": "grin",
+        "meaning": "to smile broadly, often with the corners of the mouth turned up and the teeth exposed"
+    },
+    {
+        "word": "haze",
+        "meaning": "a state of mental confusion or unawareness"
+    },
+    {
+        "word": "hope",
+        "meaning": "a feeling of expectation and desire for a certain thing to happen"
+    },
+    {
+        "word": "joke",
+        "meaning": "something said or done to evoke laughter"
+    },
+    {
+        "word": "jolt",
+        "meaning": "a sudden shake or jar"
+    },
+    {
+        "word": "leap",
+        "meaning": "to spring with a sudden movement, especially to jump from one place to another"
+    },
+    {
+        "word": "leek",
+        "meaning": "a vegetable with a long, thin green stalk and white flesh, related to the onion and garlic, and used in cooking"
+    },
+    {
+        "word": "leer",
+        "meaning": "a sly or lecherous look"
+    },
+    {
+        "word": "menu",
+        "meaning": "a list of the dishes available in a restaurant"
+    },
+    {
+        "word": "mine",
+        "meaning": "a place where coal, oil, or other minerals are extracted from the earth"
+    },
+    {
+        "word": "mint",
+        "meaning": "a place where money is coined by authority of the government"
+    },
+    {
+        "word": "mock",
+        "meaning": "to treat with contempt or ridicule"
+    },
+    {
+        "word": "note",
+        "meaning": "a written or printed communication, usually on paper, consisting of a few lines of words or numbers"
     }
 ]
