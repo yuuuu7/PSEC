@@ -2,13 +2,30 @@ import random
 import json
 import datetime
 import ast
-import os
+import re
 
+def is_valid_username(input_str, authorized_chars):
+  with open("game_logs.txt") as f:
+    data = json.loads(f.read())
 
-def update_userinfo(file_name):
-  with open(file_name, 'a') as f:
-    info = "{}\t{}\t{}\n".format(userName, points, date_now)
-    f.write(info)
+  for c in input_str:
+    # Check if the character is present in the authorized_chars list
+    if c not in authorized_chars:
+        # The character is not authorized
+        print("Invalid username. Only upper and lowercase letters, '-', and '/' are allowed.")
+        return False
+        
+  # Iterate over the list of dictionaries
+  for player in data:
+      # Check if the username is present in the data
+      if input_str == player['name']:
+        print("Sorry this username already exists, try a different username.")
+        # The username is present in the data
+        return False
+
+  # If we reach this point, the username is not present in the data
+  return True
+
 
 def create_default_gs_file(file_name):
   # Handle the FileNotFoundError exception
@@ -20,7 +37,7 @@ def create_default_gs_file(file_name):
   except FileNotFoundError:
     # If the file does not exist, create a new file and write the game settings to it
     file = open(file_name, 'w')
-    file.write('{\n  "number of attempts": "6",\n  "number of words": "3",\n  "number of top players": "0"\n}')
+    file.write('{\n  "number of attempts": 6,\n  "number of words": 3,\n  "number of top players": 0\n}')
   finally:
     # Close the file
     file.close()
@@ -122,15 +139,20 @@ def create_default_wordlist_file(filename):
             json.dump(data, f, indent=4)
 
 
-def user_stats(file_name):
-  with open(file_name, 'r') as file:
-   for line in file:
-    print(line)
-
 def update_gamelogs():
-  with open('game_logs.txt', 'a') as f:
-    info = "{}\t{}\t{}\n".format(userName, points, date_now)
-    f.write(info)
+  with open('game_logs.txt') as f:
+    data = json.loads(f.read())
+    
+  new_player= {"name": userName, "points": points, "date": date_now}
+
+  data.append(new_player)
+
+  json_data = json.dumps(data,indent=4)
+
+  # Open the file in write mode
+  with open("game_logs.txt", "w") as f:
+    # Write the modified JSON string to the file
+    f.write(json_data)
 
 def print_hangman_art():
   with open('hangman_art.txt') as f:
@@ -138,6 +160,23 @@ def print_hangman_art():
 
 
    print(hangman_art[stage])
+
+def print_top_players():
+  with open("game_logs.txt") as file:
+    contents = file.read()
+
+  # Parse the contents of the file and store the result in a variable
+  data = json.loads(contents)
+
+  # Sort the data by points in descending order
+  sorted_list = sorted(data, key=lambda x: x['points'], reverse=True)
+
+  # Print the top 5 players in the desired format
+  for player in sorted_list[:5]:
+      name = player['name']
+      points = player['points']
+      date = player['date']
+      print(f"{name}\t{points}\t{date}\n")
 
 create_default_gs_file('game-settings.txt')
 with open("game-settings.txt") as f:
@@ -149,7 +188,13 @@ max_incorrect_guesses = settings["number of attempts"]
 total_number_of_words = settings['number of words']
 number_of_top_players = settings['number of top players']
 
-date_now = datetime.date.today()
+
+date_today = datetime.date.today()
+date_now = date_today.strftime("%d-%m-%y")
+
+# Define a list of allowed characters
+allowed_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '-', '/']
+
 
 session = 0
 counter = 0
@@ -168,23 +213,10 @@ while True and userChoice == 0:
       counter = 0
       while counter == 0:
         userName = input("\n" + "Please enter your name:")
-        # Create an empty dictionary to store the data
-        with open('game_logs.txt', 'r') as f:
-          # Read the file line by line
-          for line in f:
-            # Split the line into fields
-            fields = line.split('\t')
-            # Add the data to the dictionary, using the username as the key
-            data[fields[0]] = fields[1:]
-
-        # Check if the username we are looking for exists in the dictionary
-        if userName in data:
-          # If it does, the username already exists
-          print('Username already exists, please try another Username instead!')
-          counter = 0
-          session == 1
-        else:
+        if is_valid_username(userName, allowed_characters):
           break
+        else:
+          counter = 0
 
 
       create_default_wordlist_file('wordlist.txt')
@@ -201,6 +233,7 @@ while True and userChoice == 0:
         counter = 0
         counter2 = 0
         points2 = 0
+        counter3 = 0
 
         with open("wordlist.txt") as f:
           wordlist = json.loads(f.read())
@@ -222,6 +255,12 @@ while True and userChoice == 0:
             print(f'Word: {" ".join([c if c in guesses else "_" for c in word])}')
             print(f'\nIncorrect letters: {wrong_guesses}', '(', counter, ')\n')
             print("You have used", i,"/", max_incorrect_guesses, "of max number of incorrect guesses\n")
+          elif counter3 > 0:
+            print_hangman_art()
+            print(f'Word: {" ".join([c if c in guesses else "_" for c in word])}')
+            print(f'\nIncorrect letters: {wrong_guesses}', '(', counter, ')\n')
+            print("You have used", i,"/", max_incorrect_guesses, "of max number of incorrect guesses\n")
+            print("You have already guessed this letter! Try a different letter!\n")
           else:
             stage += 1
             print_hangman_art()
@@ -231,12 +270,16 @@ while True and userChoice == 0:
 
           userGuess = input("Guess a letter: ").lower().strip()
 
-          if userGuess in word:
+          if userGuess in word and userGuess not in guesses:
             counter2 = 0
             guesses.append(userGuess)
             if points <= max_points:
               points2 += 2
               points += 2
+          elif userGuess in word and userGuess in guesses:
+            counter3 += 1
+          elif userGuess not in word and userGuess in wrong_guesses:
+            counter3 += 1
           elif userGuess not in word:
             i += 1
             counter += 1
@@ -261,11 +304,19 @@ while True and userChoice == 0:
           userChoice = 0
           update_gamelogs()
           print("\nThank you for playing!")
+          if points < 15:
+            print("\nSorry, you lost!")
+          else:
+            print("\nYou won!")
           break
         elif session == 3:
           userChoice = 0
           update_gamelogs()
           print("Sorry you have reached the max number of sessions!")
+          if points < 15:
+            print("\nSorry, you lost!")
+          else:
+            print("\nYou won!")
           break
         else:
           print("Please enter a valid input.")
@@ -275,7 +326,7 @@ while True and userChoice == 0:
     print("\n" + "\t" + "HANGMAN" + "\n")
     print("============== Top 5 Players ==============")
     print("Name\tPoints\tDate")
-    user_stats('game_logs.txt')
+    print_top_players()
     exit_input = int(input("Press '0' to exit: "))
     if (exit_input == 0):
       userChoice = 0
