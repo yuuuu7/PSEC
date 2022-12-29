@@ -2,7 +2,7 @@ import random
 import json
 import datetime
 import ast
-import re
+import os
 
 def is_valid_username(input_str, authorized_chars):
   with open("game_logs.txt") as f:
@@ -170,13 +170,14 @@ def print_top_players():
 
   # Sort the data by points in descending order
   sorted_list = sorted(data, key=lambda x: x['points'], reverse=True)
-
+  i = 1
   # Print the top 5 players in the desired format
-  for player in sorted_list[:5]:
+  for player in sorted_list[:no_of_top_players]:
       name = player['name']
       points = player['points']
       date = player['date']
-      print(f"{name}\t{points}\t{date}\n")
+      print(f"{i}. {name} - > {points} points\n")
+      i += 1
 
 create_default_gs_file('game-settings.txt')
 with open("game-settings.txt") as f:
@@ -208,12 +209,16 @@ while True and userChoice == 0:
   userChoice = int(input("\n" + "\t" + "1. Play Hangman" + "\n" + "\t" + "2. Display the top 5 players" + "\n" + "\t" + "3. Quit" + "\n" + "\n" + "  >>"))
 
   if userChoice == 1:
+      # Clear the terminal screen
+      os.system('cls' if os.name == 'nt' else 'clear')
       session += 1
       data = {}
       counter = 0
       while counter == 0:
         userName = input("\n" + "Please enter your name:")
         if is_valid_username(userName, allowed_characters):
+          # Clear the terminal screen
+          os.system('cls' if os.name == 'nt' else 'clear')
           break
         else:
           counter = 0
@@ -234,7 +239,9 @@ while True and userChoice == 0:
         counter2 = 0
         points2 = 0
         counter3 = 0
-
+        correct_guess_counter = 0
+        wrong_guess_counter = 0
+        os.system('cls' if os.name == 'nt' else 'clear')
         with open("wordlist.txt") as f:
           wordlist = json.loads(f.read())
 
@@ -246,6 +253,7 @@ while True and userChoice == 0:
           meaning = selected_dictionary['meaning']
 
         while i < max_incorrect_guesses:
+          os.system('cls' if os.name == 'nt' else 'clear')
           print("\n" + "HANGMAN" + "\n")
           print("Player: ", userName)
           print(session, 'of 3\n')
@@ -272,6 +280,7 @@ while True and userChoice == 0:
 
           if userGuess in word and userGuess not in guesses:
             counter2 = 0
+            correct_guess_counter += 1
             guesses.append(userGuess)
             if points <= max_points:
               points2 += 2
@@ -284,14 +293,16 @@ while True and userChoice == 0:
             i += 1
             counter += 1
             counter2 += 1
+            wrong_guess_counter += 1
             wrong_guesses.append(userGuess)
 
           if all([c in guesses for c in word]):
-            print("\nCongratulations! You got the word right!\n")
+            print(f"\nCongratulations! After {correct_guess_counter} Correct Guesses and {wrong_guess_counter} Wrong Guesses, you got the word right!")
             print(f"The word was: {word}. It means {meaning}\n")
             break
 
         if i == max_incorrect_guesses:
+          os.system('cls' if os.name == 'nt' else 'clear')
           stage = 6
           print_hangman_art()
           print("\nYou have used all of your", i, '/', max_incorrect_guesses, "incorrect attempts!\n")
@@ -303,11 +314,10 @@ while True and userChoice == 0:
         elif play_again.lower() == "n":
           userChoice = 0
           update_gamelogs()
-          print("\nThank you for playing!")
           if points < 15:
             print("\nSorry, you lost!")
           else:
-            print("\nYou won!")
+            print("\nYou won the game!")
           break
         elif session == 3:
           userChoice = 0
@@ -323,12 +333,19 @@ while True and userChoice == 0:
 
   
   if userChoice == 2:
+    os.system('cls' if os.name == 'nt' else 'clear')
+    with open('game-settings.txt') as f:
+      data = json.loads(f.read())
+
+    no_of_top_players = data['number of top players']
+     
     print("\n" + "\t" + "HANGMAN" + "\n")
-    print("============== Top 5 Players ==============")
-    print("Name\tPoints\tDate")
+    print(f"============== Top {no_of_top_players} Players ==============\n")
     print_top_players()
+    print("============================================")
     exit_input = int(input("Press '0' to exit: "))
     if (exit_input == 0):
+      os.system('cls' if os.name == 'nt' else 'clear')
       userChoice = 0
 
   elif userChoice == 3:
