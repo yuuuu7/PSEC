@@ -3,6 +3,7 @@ import json
 import datetime
 import ast
 import os
+from colorama import Fore, Back, Style
 
 def is_valid_username(input_str, authorized_chars):
   with open("game_logs.txt") as f:
@@ -298,7 +299,8 @@ while True and userChoice == 0:
 
           if all([c in guesses for c in word]):
             print(f"\nCongratulations! After {correct_guess_counter} Correct Guesses and {wrong_guess_counter} Wrong Guesses, you got the word right!")
-            print(f"The word was: {word}. It means {meaning}\n")
+            print(f"The word was: {word}.")
+            print(f"It means {meaning}.")
             break
 
         if i == max_incorrect_guesses:
@@ -308,28 +310,31 @@ while True and userChoice == 0:
           print("\nYou have used all of your", i, '/', max_incorrect_guesses, "incorrect attempts!\n")
 
         print(f"\nThanks for playing! You have earned {points2} points from this session!\n")
-        play_again = input("Do you want to play again? [Y/N]: ").lower()
-        if play_again.lower() == "y":
-          session += 1
-        elif play_again.lower() == "n":
-          userChoice = 0
-          update_gamelogs()
-          if points < 15:
-            print("\nSorry, you lost!")
+        while True:
+          play_again = input("Do you want to play again? [Y/N]: ").lower()
+          if play_again.lower() == "y":
+            session += 1
+          elif play_again.lower() == "n":
+            userChoice = 0
+            update_gamelogs()
+            if points < 15:
+              print(Fore.RED + "\nSorry, you lost!" + Style.RESET_ALL)
+            else:
+              print("\nYou won the game!")
+            break
+          elif session == 3:
+            userChoice = 0
+            update_gamelogs()
+            print(Fore.RED + "Sorry you have reached the max number of sessions!")
+            if points < 15:
+              print(Fore.RED + "\nSorry, you lost!" + Style.RESET_ALL )
+            else:
+              print(Fore.GREEN + "\nYou won!" + Style.RESET_ALL)
+            break
           else:
-            print("\nYou won the game!")
-          break
-        elif session == 3:
-          userChoice = 0
-          update_gamelogs()
-          print("Sorry you have reached the max number of sessions!")
-          if points < 15:
-            print("\nSorry, you lost!")
-          else:
-            print("\nYou won!")
-          break
-        else:
-          print("Please enter a valid input.")
+            print(Fore.RED + "Please enter a valid input." + Style.RESET_ALL)
+
+        break
 
   
   if userChoice == 2:
