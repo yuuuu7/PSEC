@@ -38,7 +38,7 @@ def create_default_gs_file(file_name):
   except FileNotFoundError:
     # If the file does not exist, create a new file and write the game settings to it
     file = open(file_name, 'w')
-    file.write('{\n  "number of attempts": 6,\n  "number of words": 3,\n  "number of top players": 0\n}')
+    file.write('{\n  "number of attempts": 6,\n  "number of words": 20,\n  "number of top players": 5\n}')
   finally:
     # Close the file
     file.close()
@@ -156,11 +156,14 @@ def update_gamelogs():
     f.write(json_data)
 
 def print_hangman_art():
+ try:
   with open('hangman_art.txt') as f:
    hangman_art = ast.literal_eval(f.read())
 
 
    print(hangman_art[stage])
+ except ValueError:
+  print("The file 'hangman_art.txt' is empty, please contact an Administrator to solve this issue.")
 
 def print_top_players():
   with open("game_logs.txt") as file:
@@ -180,9 +183,16 @@ def print_top_players():
       print(f"{i}. {name} - > {points} points\n")
       i += 1
 
-create_default_gs_file('game-settings.txt')
-with open("game-settings.txt") as f:
-  settings = json.load(f)
+
+try:
+  with open("game-settings.txt") as f:
+    settings = json.load(f)
+except ValueError:
+  print("Sorry but the Game Settings file is empty, please contact an Administrator to fix this issue.")
+  exit()
+except FileNotFoundError:
+  create_default_gs_file('game-settings.txt')
+  
 
 
 # Get the game settings
@@ -204,10 +214,10 @@ data = {}
 stage=6
 userChoice = 0
 while True and userChoice == 0:
-
-  print(" _    _              _   _    _____   __  __              _   _ \n| |  | |     /\     | \ | |  / ____| |  \/  |     /\     | \ | |\n| |__| |    /  \    |  \| | | |  __  | \  / |    /  \    |  \| |\n|  __  |   / /\ \   | . ` | | | |_ | | |\/| |   / /\ \   | . ` |\n| |  | |  / ____ \  | |\  | | |__| | | |  | |  / ____ \  | |\  |\n|_|  |_| /_/    \_\ |_| \_|  \_____| |_|  |_| /_/    \_\ |_| \_|")
+  os.system('cls' if os.name == 'nt' else 'clear')
+  print(Fore.BLUE + " _    _              _   _    _____   __  __              _   _ \n| |  | |     /\     | \ | |  / ____| |  \/  |     /\     | \ | |\n| |__| |    /  \    |  \| | | |  __  | \  / |    /  \    |  \| |\n|  __  |   / /\ \   | . ` | | | |_ | | |\/| |   / /\ \   | . ` |\n| |  | |  / ____ \  | |\  | | |__| | | |  | |  / ____ \  | |\  |\n|_|  |_| /_/    \_\ |_| \_|  \_____| |_|  |_| /_/    \_\ |_| \_|" + Style.RESET_ALL)
   print_hangman_art()
-  userChoice = int(input("\n" + "\t" + "1. Play Hangman" + "\n" + "\t" + "2. Display the top 5 players" + "\n" + "\t" + "3. Quit" + "\n" + "\n" + "  >>"))
+  userChoice = int(input("\n" + "\t" + "1. Play Hangman" + "\n" + "\t" + "2. Display the top 5 players" + "\n" + "\t" + Fore.RED + "3. Quit" + Style.RESET_ALL + "\n" + "\n" + "  >>"))
 
   if userChoice == 1:
       # Clear the terminal screen
@@ -224,12 +234,7 @@ while True and userChoice == 0:
         else:
           counter = 0
 
-
-      create_default_wordlist_file('wordlist.txt')
-
-     
       points = 0
-
       while session <= 3:
         i = 0
         max_points = 30
@@ -243,15 +248,20 @@ while True and userChoice == 0:
         correct_guess_counter = 0
         wrong_guess_counter = 0
         os.system('cls' if os.name == 'nt' else 'clear')
-        with open("wordlist.txt") as f:
-          wordlist = json.loads(f.read())
+        try:
+          with open("wordlist.txt") as f:
+            wordlist = json.loads(f.read())
 
-          # Choose a random word from the wordlist
-          selected_dictionary = random.choice(wordlist)
+            # Choose a random word from the wordlist
+            selected_dictionary = random.choice(wordlist)
 
-          # Extract the word and meaning from the dictionary
-          word = selected_dictionary['word']
-          meaning = selected_dictionary['meaning']
+            # Extract the word and meaning from the dictionary
+            word = selected_dictionary['word']
+            meaning = selected_dictionary['meaning']
+        except FileNotFoundError:
+          create_default_wordlist_file('wordlist.txt')
+        except ValueError:
+          print("Sorry, the file 'wordlist.txt' is empty, please contact an Administrator to fix this issue.")
 
         while i < max_incorrect_guesses:
           os.system('cls' if os.name == 'nt' else 'clear')

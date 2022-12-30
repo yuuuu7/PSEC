@@ -1,4 +1,1 @@
-from colorama import Fore, Back, Style
-
-print(Fore.RED + "Hello, World!" + Style.RESET_ALL)
-
+new_words = int(input("Enter the new number of words: "))

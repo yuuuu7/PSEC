@@ -2,6 +2,7 @@ import json
 import hashlib
 import os
 import datetime
+from colorama import Fore, Back, Style
 
 def admin_login():
  max_attempt = 3
@@ -24,10 +25,10 @@ def admin_login():
   else:
     os.system('cls' if os.name == 'nt' else 'clear')
     i -= 1
-    print('\nIncorrect username or password!')
+    print(Fore.RED + '\nIncorrect username or password!' + Style.RESET_ALL)
     print(f"You are left with {i}/", max_attempt,  'attempt(s)\n')
     if i == 0:
-      print("Sorry you have used your max number of attempts at logging in")
+      print(Fore.Red + "Sorry you have used your max number of attempts at logging in" + Style.RESET_ALL)
       exit()
 
 def print_word_list():
@@ -42,6 +43,18 @@ def print_word_list():
   for i, word in enumerate(words, start=1):
       print(f"{i}. {word['word']}")
 
+def print_word_list_and_meaning():
+  # Open the file and read the contents
+  with open('wordlist.txt') as f:
+      contents = f.read()
+
+  # Parse the contents of the file as a JSON object
+  words = json.loads(contents)
+
+  # Print the list of words
+  for i, word in enumerate(words, start=1):
+      print(f"{i}. {word['word']} - {word['meaning']}\n")
+
 def word_settings():
   def replace_word():
     # Open the file in read mode
@@ -49,11 +62,13 @@ def word_settings():
       # Parse the JSON string in the file
       data = json.loads(f.read())
 
-    found = False
-    while not found:
+    
+    while True:
+      counter = 1
+      print("============ WORDLIST ============\n")
       print_word_list()
     # Prompt the user for the word to replace
-      userInput = input("\nEnter the word to be replaced (enter 'q' to exit): ").strip().lower()
+      userInput = input("\nEnter the" + Fore.RED + " WORD " + Style.RESET_ALL + "to be replaced (enter 'q' to exit): ").strip().lower()
 
       # Exit the program if the user enters 'q'
       if userInput == 'q':
@@ -65,23 +80,26 @@ def word_settings():
       # Iterate through the list of dictionaries and find the dictionary containing the word to replace
       for item in data:
         if userInput == item["word"]:
-          found = True
+          counter = 0
           userInputreplace = input("Enter replacement: ")
           item["word"] = userInputreplace.strip()
-          print(f"\nWord Changed Successfully! {userInput} --> {userInputreplace}")
+          os.system('cls' if os.name == 'nt' else 'clear')
+
+          # Convert the dictionary back into a JSON string
+          json_data = json.dumps(data,indent=4)
+
+          # Open the file in write mode
+          with open("wordlist.txt", "w") as f:
+            # Write the modified JSON string to the file
+            f.write(json_data)
+
+          print(Fore.GREEN + f"\nWord Changed Successfully!"  + Style.RESET_ALL , f"{userInput} --> {userInputreplace}\n")
 
       # If the word was not found, display an error message
-      if not found:
-        print(f"\nSorry, the word '{userInput}' does not exist, please enter an EXISTING word to be replaced.")
+      if counter > 0:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"\nSorry, the word '{userInput}' does not exist, please enter an" + Fore.RED + " EXISTING "  + Style.RESET_ALL +  "word to be replaced.")
       
-
-    # Convert the dictionary back into a JSON string
-    json_data = json.dumps(data,indent=4)
-
-    # Open the file in write mode
-    with open("wordlist.txt", "w") as f:
-      # Write the modified JSON string to the file
-      f.write(json_data)
 
   def replace_meaning():
     # Open the file in read mode
@@ -89,9 +107,12 @@ def word_settings():
       # Parse the JSON string in the file
       data = json.loads(f.read())
 
-    found = False
-    while not found:
-      userInput = input("\nEnter whichever (Word)'s meaning you want to change(Press 'q' to exit): ")
+    
+    while True:
+      counter = 1
+      print("================= WORDLIST =================\n")
+      print_word_list_and_meaning()
+      userInput = input("\nEnter whichever" + Fore.RED + " WORD" + Style.RESET_ALL + "'s meaning you want to" + Fore.GREEN + " CHANGE " + Style.RESET_ALL + "(Press 'q' to exit): ")
 
       if userInput == 'q':
           os.system('cls' if os.name == 'nt' else 'clear')
@@ -101,21 +122,25 @@ def word_settings():
       # Iterate through the dictionary and replace the value for the specific word
       for item in data:
         if userInput == item['word']:
-          found = True
+          counter = 0
           userInputreplace = input("Enter replacement meaning: ")
           item["meaning"] = userInputreplace
-          print(f"\nMeaning Changed Successfully!")
+          os.system('cls' if os.name == 'nt' else 'clear')
 
-      if not found:
-          print(f"\nSorry, the word '{userInput}' does not exist, please enter an EXISTING word.")
+          # Convert the dictionary back into a JSON string
+          json_data = json.dumps(data,indent=4)
 
-    # Convert the dictionary back into a JSON string
-    json_data = json.dumps(data,indent=4)
+          # Open the file in write mode
+          with open("wordlist.txt", "w") as f:
+            # Write the modified JSON string to the file
+            f.write(json_data)
 
-    # Open the file in write mode
-    with open("wordlist.txt", "w") as f:
-      # Write the modified JSON string to the file
-      f.write(json_data)
+          print(Fore.GREEN + f"\nMeaning Changed Successfully!\n" + Style.RESET_ALL)
+
+      if counter > 0:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"\nSorry, the word '{userInput}' does not exist, please enter an" + Fore.RED + " EXISTING " + Style.RESET_ALL + "word.")
+
 
   def add_new_word_meaning():
     # Open the file in read mode
@@ -123,35 +148,45 @@ def word_settings():
       # Parse the JSON string in the file
       data = json.loads(f.read())
 
-    # Get the new word and meaning from the user
-    new_word = input("Enter a new word that you want to add: ").strip().lower()
-    new_meaning = input("Enter it's Definition: ")
+    while True:
+      print("============ WORDLIST ============\n")
+      print_word_list()
+      # Get the new word and meaning from the user
+      new_word = input("\nEnter a new word that you want to" + Fore.GREEN + " ADD " + Style.RESET_ALL + "(Press 'q' to quit): ").strip().lower()
+      if new_word == 'q':
+        os.system('cls' if os.name == 'nt' else 'clear')
+        break
+      new_meaning = input("Enter it's Definition (Press 'q' to quit): ")
+      if new_meaning == 'q':
+        os.system('cls' if os.name == 'nt' else 'clear')
+        break
 
-    # Create a new dictionary with the new word and meaning
-    new_item = {"word": new_word, "meaning": new_meaning}
+      # Create a new dictionary with the new word and meaning
+      new_item = {"word": new_word, "meaning": new_meaning}
 
-    # Add the new dictionary to the list of dictionaries
-    data.append(new_item)
+      # Add the new dictionary to the list of dictionaries
+      data.append(new_item)
 
 
-    # Convert the dictionary back into a JSON string
-    json_data = json.dumps(data,indent=4)
+      # Convert the dictionary back into a JSON string
+      json_data = json.dumps(data,indent=4)
 
-    # Open the file in write mode
-    with open("wordlist.txt", "w") as f:
-      # Write the modified JSON string to the file
-      f.write(json_data)
+      # Open the file in write mode
+      with open("wordlist.txt", "w") as f:
+        # Write the modified JSON string to the file
+        f.write(json_data)
+
+      print(Fore.GREEN + "\nNew Word and Meaning successfully added!" + Style.RESET_ALL)
 
   def delete_word_meaning():
     with open("wordlist.txt", "r") as f:
       # Parse the JSON string in the file
       data = json.loads(f.read())
 
-    found = False
-    while not found:
+    while True:
+      print("============ WORDLIST ============\n")
       print_word_list()
-
-      userInput = input("\nEnter a word that you want to delete (Definition will be deleted as well): ").strip().lower()
+      userInput = input("\nEnter a word that you want to" + Fore.RED + " DELETE " + Style.RESET_ALL + "Definition will be deleted as well (press 'q' to quit): ").strip().lower()
 
       # Exit the program if the user enters 'q'
       if userInput == 'q':
@@ -162,21 +197,35 @@ def word_settings():
       # Iterate through the list of dictionaries and find the dictionary containing the word to delete
       for item in data:
         if userInput == item['word']:
-          found = True
-          data.remove(item)
+          while True: 
+            are_u_sure = input(f"Are you sure you want to" + Fore.RED + " DELETE " + Style.RESET_ALL + f"{userInput}? [Y/N]: ")
+            if are_u_sure.lower() == 'y':
 
-    # Convert the dictionary back into a JSON string
-    json_data = json.dumps(data,indent=4)
+              data.remove(item)
+              # Convert the dictionary back into a JSON string
+              json_data = json.dumps(data,indent=4)
 
-    # Open the file in write mode
-    with open("wordlist.txt", "w") as f:
-      # Write the modified JSON string to the file
-      f.write(json_data)
+              # Open the file in write mode
+              with open("wordlist.txt", "w") as f:
+                # Write the modified JSON string to the file
+                f.write(json_data)
+              
+              print(Fore.GREEN + "\nWord and meaning successfully deleted!" + Style.RESET_ALL)
+              
+              break
+
+            elif are_u_sure.lower() == 'n':
+              os.system('cls' if os.name == 'nt' else 'clear')
+              break
+
+            else:
+              print(Fore.RED + "Invalid Input, please enter 'y' or 'n'" + Style.RESET_ALL)
+
 
 
   while True:
-    print("            _____    __  __   _____   _   _\n    /\     |  __ \  |  \/  | |_   _| | \ | |\n   /  \    | |  | | | \  / |   | |   |  \| |\n  / /\ \   | |  | | | |\/| |   | |   | . ` |\n / ____ \  | |__| | | |  | |  _| |_  | |\  |\n/_/    \_\ |_____/  |_|  |_| |_____| |_| \_|" )
-    userChoice2 = int(input("\n" + "\t" + "1. Replace word" + "\n" + "\t" + "2. Replace meaning" + "\n" + "\t" + "3. Add word and meaning"+ "\n" + "\t" + "4. Delete word and meaning"+ "\n" + "\t" + "5. Exit" + "\n" + "\n" + "  >>"))
+    print(Fore.GREEN + "            _____    __  __   _____   _   _\n    /\     |  __ \  |  \/  | |_   _| | \ | |\n   /  \    | |  | | | \  / |   | |   |  \| |\n  / /\ \   | |  | | | |\/| |   | |   | . ` |\n / ____ \  | |__| | | |  | |  _| |_  | |\  |\n/_/    \_\ |_____/  |_|  |_| |_____| |_| \_|"  + Style.RESET_ALL )
+    userChoice2 = int(input("\n" + "\t" + "1. Replace word" + "\n" + "\t" + "2. Replace meaning" + "\n" + "\t" + "3. Add word and meaning"+ "\n" + "\t" + "4. Delete word and meaning"+ "\n" + "\t" + Fore.RED + "5. Exit" + Style.RESET_ALL + "\n" + "\n" + "  >>"))
 
     if userChoice2 == 1:
       os.system('cls' if os.name == 'nt' else 'clear')
@@ -187,11 +236,9 @@ def word_settings():
     elif userChoice2 == 3:
       os.system('cls' if os.name == 'nt' else 'clear')
       add_new_word_meaning()
-      print("\nNew Word and Meaning successfully updated!")
     elif userChoice2 == 4:
       os.system('cls' if os.name == 'nt' else 'clear')
       delete_word_meaning()
-      print("\nWord and meaning successfully deleted!")
     elif userChoice2 == 5:
       return False
 
@@ -202,36 +249,84 @@ def change_settings():
       data = json.loads(f.read())
 
     while True:
-        print("            _____    __  __   _____   _   _\n    /\     |  __ \  |  \/  | |_   _| | \ | |\n   /  \    | |  | | | \  / |   | |   |  \| |\n  / /\ \   | |  | | | |\/| |   | |   | . ` |\n / ____ \  | |__| | | |  | |  _| |_  | |\  |\n/_/    \_\ |_____/  |_|  |_| |_____| |_| \_|" )
+        print(Fore.GREEN + "            _____    __  __   _____   _   _\n    /\     |  __ \  |  \/  | |_   _| | \ | |\n   /  \    | |  | | | \  / |   | |   |  \| |\n  / /\ \   | |  | | | |\/| |   | |   | . ` |\n / ____ \  | |__| | | |  | |  _| |_  | |\  |\n/_/    \_\ |_____/  |_|  |_| |_____| |_| \_|"  + Style.RESET_ALL )
         print("\nEnter the number of the game setting you want to change\n")
-        choice = int(input("\t1. Number of attempts\n\t2. Number of words\n\t3. Number of top players\n\t4. Exit\n\n>> "))
+        choice = int(input("\t1. Number of attempts\n\t2. Number of words\n\t3. Number of top players\n\t" + Fore.RED + "4. Exit\n\n" + Style.RESET_ALL + ">> "))
 
         if choice == 1:
+
             os.system('cls' if os.name == 'nt' else 'clear')
-            new_attempts = int(input("\nEnter the new number of attempts: "))
-            data['number of attempts'] = new_attempts
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print("\nChanges made successfully!")
+
+            while True:
+              print(f"Current Max Number of Wrong Attempts: {data['number of attempts']}\n")
+              try:
+                new_attempts = int(input("\nEnter the new number of attempts (Enter '0' to quit): "))
+
+                if new_attempts == 0:
+                  os.system('cls' if os.name == 'nt' else 'clear')
+                  break
+
+                data['number of attempts'] = new_attempts
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print(Fore.GREEN + "Changes made successfully!\n" + Style.RESET_ALL)
+
+              except ValueError:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                # Input is not a valid integer
+                print("Please enter only" + Fore.RED + " Integer " + Style.RESET_ALL + "values.\n")
+
         elif choice == 2:
+
             os.system('cls' if os.name == 'nt' else 'clear')
-            new_words = int(input("Enter the new number of words: "))
-            data['number of words'] = new_words
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print("\nChanges made successfully!")
+
+            while True:
+              print(f"Current Total Number of Words: {data['number of words']}\n")
+              try:
+                new_words = int(input("Enter the new number of words (Enter '0' to quit): "))
+
+                if new_words == 0:
+                  os.system('cls' if os.name == 'nt' else 'clear')
+                  break
+
+                data['number of words'] = new_words
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print(Fore.GREEN + "Changes made successfully!\n" + Style.RESET_ALL)
+
+              except ValueError:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                # Input is not a valid integer
+                print("Please enter only" + Fore.RED + " Integer " + Style.RESET_ALL + "values.\n")
+
         elif choice == 3:
+
             os.system('cls' if os.name == 'nt' else 'clear')
-            new_players = int(input("Enter the new number of top players: "))
-            data['number of top players'] = new_players
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print("\nChanges made successfully!")
+
+            while True:
+              print(f"Current Total Number of Top Players: {data['number of top players']}\n")
+              try:
+                new_players = int(input("Enter the new number of top players (Enter '0' to quit): "))
+
+                if new_players == 0:
+                  os.system('cls' if os.name == 'nt' else 'clear')
+                  break
+
+                data['number of top players'] = new_players
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print(Fore.GREEN + "Changes made successfully!\n" + Style.RESET_ALL)
+
+              except ValueError:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                # Input is not a valid integer
+                print("Please enter only" + Fore.RED + " Integer " + Style.RESET_ALL + "values.\n")
+
         elif choice == 4:
             os.system('cls' if os.name == 'nt' else 'clear')
             break
+
         else:
-            print("\nInvalid choice!")
+            print(Fore.RED + "\nInvalid choice!" + Style.RESET_ALL)
 
 
-    
         json_data = json.dumps(data,indent=4)
 
         # Open the file in write mode
@@ -267,7 +362,7 @@ def print_report():
      # Print the report header
      print("\nGame Report")
      print("------------")
-     print("\nName\t\tPoints\t\tDate Joined")
+     print(Fore.YELLOW + "\nName\t\tPoints\t\tDate Joined" + Style.RESET_ALL)
 
      # Iterate over the games
      for game in games:
@@ -287,8 +382,8 @@ def print_report():
 if admin_login() is True:
   while True:
       os.system('cls' if os.name == 'nt' else 'clear')
-      print("            _____    __  __   _____   _   _\n    /\     |  __ \  |  \/  | |_   _| | \ | |\n   /  \    | |  | | | \  / |   | |   |  \| |\n  / /\ \   | |  | | | |\/| |   | |   | . ` |\n / ____ \  | |__| | | |  | |  _| |_  | |\  |\n/_/    \_\ |_____/  |_|  |_| |_____| |_| \_|" )
-      userChoice = int(input("\n" + "\t" + "1. Change word settings" + "\n" + "\t" + "2. Change game settings" + "\n" + "\t" + "3. Print report" + "\n" + "\t" + "4. Exit" + "\n" + "\n" + "  >>"))
+      print(Fore.GREEN + "            _____    __  __   _____   _   _\n    /\     |  __ \  |  \/  | |_   _| | \ | |\n   /  \    | |  | | | \  / |   | |   |  \| |\n  / /\ \   | |  | | | |\/| |   | |   | . ` |\n / ____ \  | |__| | | |  | |  _| |_  | |\  |\n/_/    \_\ |_____/  |_|  |_| |_____| |_| \_|" + Style.RESET_ALL )
+      userChoice = int(input("\n" + "\t" + "1. Change word settings" + "\n" + "\t" + "2. Change game settings" + "\n" + "\t" + "3. Print report" + "\n" + "\t" + Fore.RED + "4. Exit" + Style.RESET_ALL + "\n" + "\n" + "  >>"))
       if userChoice == 1:
         os.system('cls' if os.name == 'nt' else 'clear')
         word_settings()
