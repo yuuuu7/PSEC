@@ -4,6 +4,7 @@ import datetime
 import ast
 import os
 from colorama import Fore, Back, Style
+import time
 
 def is_valid_username(input_str, authorized_chars):
   with open("game_logs.txt") as f:
@@ -180,7 +181,8 @@ def print_top_players():
       name = player['name']
       points = player['points']
       date = player['date']
-      print(f"{i}. {name} - > {points} points\n")
+      print(f"    {i}. {name} - > {points} points\n")
+      time.sleep(0.04)
       i += 1
 
 
@@ -215,9 +217,30 @@ stage=6
 userChoice = 0
 while True and userChoice == 0:
   os.system('cls' if os.name == 'nt' else 'clear')
-  print(Fore.BLUE + " _    _              _   _    _____   __  __              _   _ \n| |  | |     /\     | \ | |  / ____| |  \/  |     /\     | \ | |\n| |__| |    /  \    |  \| | | |  __  | \  / |    /  \    |  \| |\n|  __  |   / /\ \   | . ` | | | |_ | | |\/| |   / /\ \   | . ` |\n| |  | |  / ____ \  | |\  | | |__| | | |  | |  / ____ \  | |\  |\n|_|  |_| /_/    \_\ |_| \_|  \_____| |_|  |_| /_/    \_\ |_| \_|" + Style.RESET_ALL)
-  print_hangman_art()
-  userChoice = int(input("\n" + "\t" + "1. Play Hangman" + "\n" + "\t" + "2. Display the top 5 players" + "\n" + "\t" + Fore.RED + "3. Quit" + Style.RESET_ALL + "\n" + "\n" + "  >>"))
+  print(Fore.BLUE + """ 
+        ██╗  ██╗ █████╗ ███╗   ██╗ ██████╗ ███╗   ███╗ █████╗ ███╗   ██╗
+        ██║  ██║██╔══██╗████╗  ██║██╔════╝ ████╗ ████║██╔══██╗████╗  ██║
+        ███████║███████║██╔██╗ ██║██║  ███╗██╔████╔██║███████║██╔██╗ ██║
+        ██╔══██║██╔══██║██║╚██╗██║██║   ██║██║╚██╔╝██║██╔══██║██║╚██╗██║
+        ██║  ██║██║  ██║██║ ╚████║╚██████╔╝██║ ╚═╝ ██║██║  ██║██║ ╚████║
+        ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝  """ + Style.RESET_ALL)
+  print('''
+      \t   ____
+      \t  |    |
+      \t  |    O
+      \t  |   /|\\
+      \t  |   / \\
+      \t  |
+        __|__
+    ''')
+  time.sleep(0.04)
+  print("\n" + "\t" + "1. Play Hangman")
+  time.sleep(0.04)
+  print("\n" + "\t" + "2. Display the top 5 players")
+  time.sleep(0.04)
+  print("\n" + "\t" + Fore.RED + "3. Quit" + Style.RESET_ALL + "\n" + "\n")
+  time.sleep(0.04)
+  userChoice = int(input("  >>"))
 
   if userChoice == 1:
       # Clear the terminal screen
@@ -354,11 +377,17 @@ while True and userChoice == 0:
 
     no_of_top_players = data['number of top players']
      
-    print("\n" + "\t" + "HANGMAN" + "\n")
-    print(f"============== Top {no_of_top_players} Players ==============\n")
+    print("\n" + Fore.YELLOW + """ 
+    ██╗     ███████╗ █████╗ ██████╗ ███████╗██████╗ ██████╗  ██████╗  █████╗ ██████╗ ██████╗ 
+    ██║     ██╔════╝██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██╔══██╗
+    ██║     █████╗  ███████║██║  ██║█████╗  ██████╔╝██████╔╝██║   ██║███████║██████╔╝██║  ██║
+    ██║     ██╔══╝  ██╔══██║██║  ██║██╔══╝  ██╔══██╗██╔══██╗██║   ██║██╔══██║██╔══██╗██║  ██║
+    ███████╗███████╗██║  ██║██████╔╝███████╗██║  ██║██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+    ╚══════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝""" + Style.RESET_ALL + "\n")
+    print(f"    ============== Top {no_of_top_players} Players ==============\n")
     print_top_players()
-    print("============================================")
-    exit_input = int(input("Press '0' to exit: "))
+    print("    ==========================================\n")
+    exit_input = int(input("    Enter '0' to exit: "))
     if (exit_input == 0):
       os.system('cls' if os.name == 'nt' else 'clear')
       userChoice = 0

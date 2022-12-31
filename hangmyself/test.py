@@ -1,1 +1,0 @@
-new_words = int(input("Enter the new number of words: "))
