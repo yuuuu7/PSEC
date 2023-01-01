@@ -7,7 +7,7 @@ from colorama import Fore, Back, Style
 import time
 
 def is_valid_username(input_str, authorized_chars):
-  with open("game_logs.txt") as f:
+  with open("../text_files/game_logs.txt") as f:
     data = json.loads(f.read())
 
   for c in input_str:
@@ -142,7 +142,7 @@ def create_default_wordlist_file(filename):
 
 
 def update_gamelogs():
-  with open('game_logs.txt') as f:
+  with open('../text_files/game_logs.txt') as f:
     data = json.loads(f.read())
     
   new_player= {"name": userName, "points": points, "date": date_now}
@@ -152,13 +152,13 @@ def update_gamelogs():
   json_data = json.dumps(data,indent=4)
 
   # Open the file in write mode
-  with open("game_logs.txt", "w") as f:
+  with open("../text_files/game_logs.txt", "w") as f:
     # Write the modified JSON string to the file
     f.write(json_data)
 
 def print_hangman_art():
  try:
-  with open('hangman_art.txt') as f:
+  with open('../text_files/hangman_art.txt') as f:
    hangman_art = ast.literal_eval(f.read())
 
 
@@ -167,33 +167,72 @@ def print_hangman_art():
   print("The file 'hangman_art.txt' is empty, please contact an Administrator to solve this issue.")
 
 def print_top_players():
-  with open("game_logs.txt") as file:
-    contents = file.read()
 
-  # Parse the contents of the file and store the result in a variable
-  data = json.loads(contents)
+  def print_leaderboard():
+    with open("../text_files/game_logs.txt") as file:
+      contents = file.read()
 
-  # Sort the data by points in descending order
-  sorted_list = sorted(data, key=lambda x: x['points'], reverse=True)
-  i = 1
-  # Print the top 5 players in the desired format
-  for player in sorted_list[:no_of_top_players]:
-      name = player['name']
-      points = player['points']
-      date = player['date']
-      print(f"    {i}. {name} - > {points} points\n")
-      time.sleep(0.04)
-      i += 1
+    # Parse the contents of the file and store the result in a variable
+    data = json.loads(contents)
+
+    # Sort the data by points in descending order
+    sorted_list = sorted(data, key=lambda x: x['points'], reverse=True)
+    i = 1
+    # Print the top 5 players in the desired format
+    for player in sorted_list[:no_of_top_players]:
+        name = player['name']
+        points = player['points']
+        date = player['date']
+        print(f"    {i}. {name} - > {points} points\n")
+        time.sleep(0.04)
+        i += 1
+  
+  os.system('cls' if os.name == 'nt' else 'clear')
+  with open('../text_files/game-settings.txt') as f:
+    data = json.loads(f.read())
+
+  no_of_top_players = data['number of top players']
+    
+  while True:
+    print("\n" + Fore.YELLOW + """ 
+    ██╗     ███████╗ █████╗ ██████╗ ███████╗██████╗ ██████╗  ██████╗  █████╗ ██████╗ ██████╗ 
+    ██║     ██╔════╝██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██╔══██╗
+    ██║     █████╗  ███████║██║  ██║█████╗  ██████╔╝██████╔╝██║   ██║███████║██████╔╝██║  ██║
+    ██║     ██╔══╝  ██╔══██║██║  ██║██╔══╝  ██╔══██╗██╔══██╗██║   ██║██╔══██║██╔══██╗██║  ██║
+    ███████╗███████╗██║  ██║██████╔╝███████╗██║  ██║██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+    ╚══════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝""" + Style.RESET_ALL + "\n")
+    print(f"    ============== Top {no_of_top_players} Players ==============\n")
+    print_leaderboard()
+    print("    ==========================================\n")
+    exit_input = int(input("    Enter '0' to exit: "))
+    if (exit_input == 0):
+      os.system('cls' if os.name == 'nt' else 'clear')
+      break
+
+
 
 
 try:
-  with open("game-settings.txt") as f:
+  with open("../text_files/game-settings.txt") as f:
     settings = json.load(f)
 except ValueError:
   print("Sorry but the Game Settings file is empty, please contact an Administrator to fix this issue.")
   exit()
 except FileNotFoundError:
-  create_default_gs_file('game-settings.txt')
+  create_default_gs_file('../text_files/game-settings.txt')
+
+try:
+  with open("../text_files/wordlist.txt") as f:
+    wordlist = json.loads(f.read())
+    
+except FileNotFoundError:
+
+  create_default_wordlist_file('../text_files/wordlist.txt')
+
+except ValueError:
+
+  print("Sorry, the file 'wordlist.txt' is empty, please contact an Administrator to fix this issue.")
+  exit()
   
 
 
@@ -261,30 +300,29 @@ while True and userChoice == 0:
       while session <= 3:
         i = 0
         max_points = 30
-        guesses = []
+        guesses = [' ']
         wrong_guesses = []
+        vowels = ['a','e','i','o','u']
         stage = 0
+        points2 = 0
         counter = 0
         counter2 = 0
-        points2 = 0
         counter3 = 0
+        counter4 = 0
         correct_guess_counter = 0
         wrong_guess_counter = 0
+        lifeline_used = False
+        lifeline_used_2 = False
         os.system('cls' if os.name == 'nt' else 'clear')
-        try:
-          with open("wordlist.txt") as f:
-            wordlist = json.loads(f.read())
+        with open("../text_files/wordlist.txt") as f:
+          wordlist = json.loads(f.read())
 
-            # Choose a random word from the wordlist
-            selected_dictionary = random.choice(wordlist)
+          # Choose a random word from the wordlist
+          selected_dictionary = random.choice(wordlist)
 
-            # Extract the word and meaning from the dictionary
-            word = selected_dictionary['word']
-            meaning = selected_dictionary['meaning']
-        except FileNotFoundError:
-          create_default_wordlist_file('wordlist.txt')
-        except ValueError:
-          print("Sorry, the file 'wordlist.txt' is empty, please contact an Administrator to fix this issue.")
+          # Extract the word and meaning from the dictionary
+          word = selected_dictionary['word']
+          meaning = selected_dictionary['meaning']
 
         while i < max_incorrect_guesses:
           os.system('cls' if os.name == 'nt' else 'clear')
@@ -303,6 +341,13 @@ while True and userChoice == 0:
             print(f'\nIncorrect letters: {wrong_guesses}', '(', counter, ')\n')
             print("You have used", i,"/", max_incorrect_guesses, "of max number of incorrect guesses\n")
             print("You have already guessed this letter! Try a different letter!\n")
+          elif counter4 == 1:
+            counter4 = 0
+            print_hangman_art()
+            print(f'Word: {" ".join([c if c in guesses else "_" for c in word])}')
+            print(f'\nIncorrect letters: {wrong_guesses}', '(', counter, ')\n')
+            print("You have used", i,"/", max_incorrect_guesses, "of max number of incorrect guesses\n")
+            print("Please guess only" + Fore.YELLOW + " ONE " + Style.RESET_ALL + "letter!\n")
           else:
             stage += 1
             print_hangman_art()
@@ -310,19 +355,115 @@ while True and userChoice == 0:
             print(f'Incorrect letters: {wrong_guesses}', '(', counter, ')\n')
             print("You have used", i,"/", max_incorrect_guesses, "of max number of incorrect guesses\n")
 
-          userGuess = input("Guess a letter: ").lower().strip()
+          userGuess = input("Guess a letter (Enter '0' to use Lifeline): ").lower().strip()
+                
+          if len(userGuess) != 1 or userGuess == ' ':
+            counter4 = 1
+            counter2 = 1
+            #returns to counter4 == 1 error statement
 
-          if userGuess in word and userGuess not in guesses:
+          elif userGuess == '0':
+            os.system('cls' if os.name == 'nt' else 'clear')
+
+            while True:
+
+
+                  if lifeline_used == False and lifeline_used_2 == False and points >= 4:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("======= Lifeline =======\n")
+                    print("1. Show all Vowels\n2. Show Definition\n3. Exit\n")
+                    lifeline_choice = input(">>")
+
+                  elif lifeline_used == True and lifeline_used_2 == False and points >= 4:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("======= Lifeline =======\n")
+                    print("1. " + Fore.RED + "Show all Vowels" + Style.RESET_ALL + "\n2. Show Definition\n3. Exit\n")
+                    lifeline_choice = input(">>")
+
+                  elif lifeline_used == False and lifeline_used_2 == True and points >= 4:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("======= Lifeline =======\n")
+                    print("1. Show all Vowels" + "\n2. " + Fore.RED + "Show Definition" + Style.RESET_ALL + "\n3. Exit\n")
+                    print(Fore.YELLOW + "Meaning: " + Style.RESET_ALL + f"{meaning}")
+                    lifeline_choice = input("\n>>")
+
+                  elif lifeline_used == True and lifeline_used_2 == True:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("======= Lifeline =======\n")
+                    print("1. " + Fore.RED + "Show all Vowels" + Style.RESET_ALL + "\n2. " + Fore.RED + "Show Definition" + Style.RESET_ALL + "\n3. Exit\n")
+                    print(Fore.YELLOW + "Meaning: " + Style.RESET_ALL + f"{meaning}")
+                    print(Fore.RED + "\nAll lifelines have been used. You cannot use any more lifelines." + Style.RESET_ALL)
+                    lifeline_choice = input("\n>>")
+                  
+                  else:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("======= Lifeline =======\n")
+                    print("1. " + Fore.BLACK + "Show all Vowels" + Style.RESET_ALL + "\n2. " + Fore.BLACK + "Show Definition" + Style.RESET_ALL + "\n3. Exit\n")
+                    print("You have" + Fore.RED + " INSUFFICIENT " + Style.RESET_ALL + "points to use" + Fore.GREEN + " Lifelines" + Style.RESET_ALL)
+                    lifeline_choice = input("\n>>")
+
+                  if lifeline_choice == '1':
+                    if not lifeline_used and points >= 4:
+                      points -= 4
+                      points2 -= 4
+                      os.system('cls' if os.name == 'nt' else 'clear')
+                      vowels_in_word = []
+                      for c in word:
+                          if c in vowels:
+                              vowels_in_word.append(c)
+                      # show all vowels in the word
+                      vowel_count = {'a': 0, 'e': 0, 'i': 0, 'o': 0, 'u': 0}
+                      for c in word:
+                          if c in vowel_count:
+                            vowel_count[c] += 1
+                      print(Fore.GREEN + "\nVowels Present:\n\n" + Style.RESET_ALL + "==============")
+                      for vowel, count in vowel_count.items():
+                        print(f"{vowel} - {count}")
+                      #counter variable 'i' is assigned the index of the current character 'c' in the word string.
+                      for c in word:
+                        if c in vowels_in_word and c not in guesses:
+                          guesses.append(c)
+                      print("\n==============\n")
+                      continue_input = input("Press enter to continue")
+                      lifeline_used = True
+                    else:
+                      lifeline_counter = 1
+
+
+                  elif lifeline_choice == '2':
+                    if not lifeline_used_2 and points >= 4:
+                      points -= 4
+                      points2 -= 4
+                      os.system('cls' if os.name == 'nt' else 'clear')
+                      # show the definition of the word
+                      print(f"Definition: {meaning}")
+                      continue_input = input("\nPress enter to continue")
+                      lifeline_used_2 = True
+                    else:
+                      lifeline_counter = 1
+
+                  else:
+                    break
+
+          elif not userGuess.isalpha():
+            counter4 = 1
+            counter2 = 1
+            #returns to counter4 == 1 error statement
+
+          elif userGuess in word and userGuess not in guesses:
             counter2 = 0
             correct_guess_counter += 1
             guesses.append(userGuess)
             if points <= max_points:
               points2 += 2
               points += 2
+
           elif userGuess in word and userGuess in guesses:
             counter3 += 1
+
           elif userGuess not in word and userGuess in wrong_guesses:
             counter3 += 1
+            
           elif userGuess not in word:
             i += 1
             counter += 1
@@ -330,67 +471,60 @@ while True and userChoice == 0:
             wrong_guess_counter += 1
             wrong_guesses.append(userGuess)
 
+          if i == max_incorrect_guesses:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            stage = 6
+            print_hangman_art()
+            print("\nYou have used all of your", i, '/', max_incorrect_guesses, "incorrect attempts!\n")
+          
           if all([c in guesses for c in word]):
-            print(f"\nCongratulations! After {correct_guess_counter} Correct Guesses and {wrong_guess_counter} Wrong Guesses, you got the word right!")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print(f"\nCongratulations! After {correct_guess_counter} Correct Guesses and {wrong_guess_counter} Wrong Guesses, you got the word right!\n")
             print(f"The word was: {word}.")
-            print(f"It means {meaning}.")
+            print(f"It means: {meaning}.")
             break
-
-        if i == max_incorrect_guesses:
-          os.system('cls' if os.name == 'nt' else 'clear')
-          stage = 6
-          print_hangman_art()
-          print("\nYou have used all of your", i, '/', max_incorrect_guesses, "incorrect attempts!\n")
-
+          
         print(f"\nThanks for playing! You have earned {points2} points from this session!\n")
+        play_again_bool = False
         while True:
-          play_again = input("Do you want to play again? [Y/N]: ").lower()
+          play_again = input("\nDo you want to play again? [Y/N]: ").lower()
           if play_again.lower() == "y":
             session += 1
+            play_again_bool = True
+            break
           elif play_again.lower() == "n":
+            play_again_bool = False
             userChoice = 0
             update_gamelogs()
-            if points < 15:
-              print(Fore.RED + "\nSorry, you lost!" + Style.RESET_ALL)
+            if points2 < 15:
+              print(Fore.RED + "\nSorry, you lost!\n" + Style.RESET_ALL)
             else:
-              print("\nYou won the game!")
+              print(Fore.GREEN + "\nYou won the game!\n" + Style.RESET_ALL)
             break
           elif session == 3:
+            play_again_bool = False
             userChoice = 0
             update_gamelogs()
-            print(Fore.RED + "Sorry you have reached the max number of sessions!")
-            if points < 15:
-              print(Fore.RED + "\nSorry, you lost!" + Style.RESET_ALL )
+            print(Fore.RED + "Sorry you have reached the max number of sessions!" + Style.RESET_ALL + f" You have earned a total of {points} from all 3 Sessions")
+            if points2 < 15:
+              print(Fore.RED + "\nSorry, you lost!\n" + Style.RESET_ALL )
             else:
-              print(Fore.GREEN + "\nYou won!" + Style.RESET_ALL)
+              print(Fore.GREEN + "\nYou won the game!\n" + Style.RESET_ALL)
             break
           else:
             print(Fore.RED + "Please enter a valid input." + Style.RESET_ALL)
+        
+        if play_again_bool == False:
+          continue_input = input("Press Enter to continue")
+          break
 
-        break
+
+          
 
   
   if userChoice == 2:
-    os.system('cls' if os.name == 'nt' else 'clear')
-    with open('game-settings.txt') as f:
-      data = json.loads(f.read())
-
-    no_of_top_players = data['number of top players']
-     
-    print("\n" + Fore.YELLOW + """ 
-    ██╗     ███████╗ █████╗ ██████╗ ███████╗██████╗ ██████╗  ██████╗  █████╗ ██████╗ ██████╗ 
-    ██║     ██╔════╝██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██╔══██╗
-    ██║     █████╗  ███████║██║  ██║█████╗  ██████╔╝██████╔╝██║   ██║███████║██████╔╝██║  ██║
-    ██║     ██╔══╝  ██╔══██║██║  ██║██╔══╝  ██╔══██╗██╔══██╗██║   ██║██╔══██║██╔══██╗██║  ██║
-    ███████╗███████╗██║  ██║██████╔╝███████╗██║  ██║██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
-    ╚══════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝""" + Style.RESET_ALL + "\n")
-    print(f"    ============== Top {no_of_top_players} Players ==============\n")
     print_top_players()
-    print("    ==========================================\n")
-    exit_input = int(input("    Enter '0' to exit: "))
-    if (exit_input == 0):
-      os.system('cls' if os.name == 'nt' else 'clear')
-      userChoice = 0
+    userChoice = 0
 
   elif userChoice == 3:
     print("\n" + "Thank you for playing!")
