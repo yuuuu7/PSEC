@@ -1,3 +1,54 @@
+"""
+Main Program
+
+StudentID:      p2227452
+Name:           Lim Yu Liang
+Class:          DISM/FT/1B/02
+Assessment:     CA1-1
+
+Script name:
+    admin.py
+
+Purpose:
+    This script is the admin panel for the hangman game.
+
+Usage syntax:
+    python admin.py
+
+Input file:
+    ./scripts/admin.py
+    ./scripts/hangman.py
+
+
+Output file:
+    ./text_files/game_logs.txt
+    ./text_files/game_settings.txt
+    ./text_files/word_list.txt
+    ./text_files/admin_cred.txt
+
+Python Version:
+    Python 3.10.9
+
+Reference:
+https://stackoverflow.com/questions/2769061/how-to-erase-the-file-contents-of-text-file-in-python
+https://stackoverflow.com/questions/17140886/how-to-search-and-replace-text-in-a-file-using-python
+https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
+
+Library/Module:
+- these modules are installed by default in Python 3.11
+    - hashlib
+    - json
+    - os
+    - time
+    - datetime
+
+
+Known Issues:
+    - Different counters are each used for different Error Message Displays for most of the code
+     - I understand that this is not good practice as it might the code very messy and a global variable reference may cause an Error
+     - I did it because the Graphical Interface the user will be experiencing will be a lot more clearer and easy to read and use
+     - I will take note of it in the future as it is not the best practice and try other methods to fix it
+"""
 import json
 import hashlib
 import os
@@ -5,10 +56,16 @@ import datetime
 from colorama import Fore, Back, Style
 import time
 
-def admin_settings():
+def admin_settings() -> None:
+  """
+        Main function to call when editing admin settings
 
-  def create_new_admin():
+        """
+  def create_new_admin() -> None:
+    """
+        Creates a new admin
 
+        """
 
     # Read the data from the file and store it in a dictionary
     with open('../text_files/admin_cred.txt') as f:
@@ -81,7 +138,11 @@ def admin_settings():
             counter = 2
 
 
-  def delete_admin():
+  def delete_admin() -> None:
+    """
+        Deletes an exisitng admin
+
+        """
     # Read the data from the file and store it in a dictionary
     with open('../text_files/admin_cred.txt') as f:
       data = json.loads(f.read())
@@ -141,7 +202,11 @@ def admin_settings():
         os.system('cls' if os.name == 'nt' else 'clear')
         print(f"Sorry" + Fore.RED + " INCORRECT " + Style.RESET_ALL + "Password or Username.\n")
 
-  def change_admin_pass():
+  def change_admin_pass() -> None:
+    """
+       Allows admins to change their passwords
+
+        """
     # Read the data from the file and store it in a dictionary
     with open('../text_files/admin_cred.txt') as f:
       data = json.loads(f.read())
@@ -238,29 +303,40 @@ def admin_settings():
 
       userChoice = int(input("  >>"))
       if userChoice == 1:
+        #Counter = 0 so as to not throw the error statement unecessarily
         counter = 0
         os.system('cls' if os.name == 'nt' else 'clear')
+        #Calls the create new admin function for the admin to create a new admin
         create_new_admin()
       elif userChoice == 2:
+        #Counter = 0 so as to not throw the error statement unecessarily
         counter = 0
         os.system('cls' if os.name == 'nt' else 'clear')
+        #Calls the delete admin function for the admin to delete an admin
         delete_admin()
       elif userChoice == 3:
+        #Counter = 0 so as to not throw the error statement unecessarily
         counter = 0
         os.system('cls' if os.name == 'nt' else 'clear')
+        #Calls the change admin password function for the admin to change their passwords
         change_admin_pass()
       elif userChoice == 4:
+        #Breaks out of admin settings
         os.system('cls' if os.name == 'nt' else 'clear')
         break
       else:
         counter = 1
 
     except ValueError:
+      #If userinput isnt 1-4, returns to an Error Message
       counter = 1
 
 
 
-def admin_login():
+def admin_login() -> bool:
+  """
+        Creates a Login interface for authorized access only
+        """
   max_attempt = 3
   i = max_attempt
   counter = 0
@@ -299,7 +375,10 @@ def admin_login():
           print(Fore.RED + "Sorry you have used your max number of attempts at logging in" + Style.RESET_ALL)
           exit()
 
-def print_word_list():
+def print_word_list() -> None:
+  """
+       Prints the wordlist including idioms-proverbs
+        """
   # Open the file and read the contents
   with open('../text_files/wordlist.txt') as f:
       contents = f.read()
@@ -312,7 +391,10 @@ def print_word_list():
       print(f"{i}. {word['word']}")
 
 
-def print_word_list_and_meaning():
+def print_word_list_and_meaning() -> None:
+  """
+  Prints the entire wordlist including idioms-proverbs + definitions
+        """
   # Open the file and read the contents
   with open('../text_files/wordlist.txt') as f:
       contents = f.read()
@@ -324,9 +406,14 @@ def print_word_list_and_meaning():
   for i, word in enumerate(words, start=1):
       print(f"{i}. {word['word']} - {word['meaning']}\n")
 
-def word_settings():
-
-  def replace_word():
+def word_settings() -> None:
+  """
+  Main Function to call when trying to edit word settings
+        """
+  def replace_word() -> None:
+    """
+        Replaces the word based on admin's inputs
+        """
     # Open the file in read mode
     with open("../text_files/wordlist.txt", "r") as f:
       # Parse the JSON string in the file
@@ -379,7 +466,10 @@ def word_settings():
         counter = 1
       
 
-  def replace_meaning():
+  def replace_meaning() -> None:
+    """
+        Changes the definitions of words inside the wordlist file
+        """
     # Open the file in read mode
     with open("../text_files/wordlist.txt", "r") as f:
       # Parse the JSON string in the file
@@ -428,7 +518,10 @@ def word_settings():
         counter = 1
 
 
-  def add_new_word_meaning():
+  def add_new_word_meaning() -> None:
+    """
+        Add a new word along with its meaning
+        """
     # Open the file in read mode
     with open("../text_files/wordlist.txt", "r") as f:
       # Parse the JSON string in the file
@@ -521,7 +614,10 @@ def word_settings():
         print("===========================\n")
         input("Press Enter to continue")
 
-  def delete_word_meaning():
+  def delete_word_meaning() -> None:
+    """
+      Deletes the word as well as it's assigned meaning and other attributes
+          """
     with open("../text_files/wordlist.txt", "r") as f:
       # Parse the JSON string in the file
       data = json.loads(f.read())
@@ -585,14 +681,19 @@ def word_settings():
           os.system('cls' if os.name == 'nt' else 'clear')
           counter = 1
 
-  def toggle_items():
-    
+  def toggle_items() -> None:
+    """
+        Main function to call when toggling words/idioms-proverbs
+        """
     # Open the file in read mode
     with open("../text_files/wordlist.txt", "r") as f:
       # Parse the JSON string in the file
       data = json.loads(f.read())
 
-    def print_word_list_simple():
+    def print_word_list_simple() -> None:
+      """
+       Prints a list of simple words
+        """
       # Open the file and read the contents
       with open('../text_files/wordlist.txt') as f:
         contents = f.read()
@@ -612,7 +713,10 @@ def word_settings():
       
       print("\n=========================\n")
 
-    def print_word_list_complex():
+    def print_word_list_complex() -> None:
+      """
+       Prints a list of complex words
+        """
       # Open the file and read the contents
       with open('../text_files/wordlist.txt') as f:
         contents = f.read()
@@ -632,7 +736,10 @@ def word_settings():
 
       print("\n==========================\n")
 
-    def print_idiom_proverbs_list_simple():
+    def print_idiom_proverbs_list_simple() -> None:
+      """
+       Prints a list of simple idioms-proverbs
+        """
       # Open the file and read the contents
       with open('../text_files/wordlist.txt') as f:
         contents = f.read()
@@ -652,7 +759,10 @@ def word_settings():
       
       print("\n==============================\n")
 
-    def print_idiom_proverbs_list_complex():
+    def print_idiom_proverbs_list_complex() -> None:
+        """
+         Prints a list of complex idiom-proverbs
+        """
         #Open the file and read the contents
         with open('../text_files/wordlist.txt') as f:
           contents = f.read()
@@ -672,8 +782,10 @@ def word_settings():
 
         print("\n====================================\n")
 
-    def toggle_words():
-
+    def toggle_words() -> None:
+      """
+       Toggles all words on/off
+        """
       # Open the file in read mode
       with open("../text_files/wordlist.txt", "r") as f:
         # Parse the JSON string in the file
@@ -714,8 +826,10 @@ def word_settings():
         else:
           print("Please enter a valid input.")
     
-    def toggle_words_simple():
-
+    def toggle_words_simple() -> None:
+      """
+       Toggles simple words on/off
+        """
       # Open the file in read mode
       with open("../text_files/wordlist.txt", "r") as f:
         # Parse the JSON string in the file
@@ -756,8 +870,10 @@ def word_settings():
         else:
           print("Please enter a valid input.")
     
-    def toggle_words_complex():
-
+    def toggle_words_complex() -> None:
+      """
+       Toggles complex words on/off
+      """
       # Open the file in read mode
       with open("../text_files/wordlist.txt", "r") as f:
         # Parse the JSON string in the file
@@ -798,8 +914,10 @@ def word_settings():
         else:
           print("Please enter a valid input.")
 
-    def toggle_idiom_proverbs():
-
+    def toggle_idiom_proverbs() -> None:
+      """
+       Toggles all idiom-proverbs on/off
+      """
       # Open the file in read mode
       with open("../text_files/wordlist.txt", "r") as f:
         # Parse the JSON string in the file
@@ -840,8 +958,10 @@ def word_settings():
         else:
           print("Please enter a valid input.\n")
 
-    def toggle_idiom_proverbs_simple():
-
+    def toggle_idiom_proverbs_simple() -> None:
+      """
+       Toggles all simple idioms-proverbs on/off
+      """
       # Open the file in read mode
       with open("../text_files/wordlist.txt", "r") as f:
         # Parse the JSON string in the file
@@ -882,8 +1002,10 @@ def word_settings():
         else:
           print("Please enter a valid input.")
 
-    def toggle_idiom_proverbs_complex():
-
+    def toggle_idiom_proverbs_complex() -> None:
+      """
+       Toggles all complex idioms-proverbs on/off
+      """
       # Open the file in read mode
       with open("../text_files/wordlist.txt", "r") as f:
         # Parse the JSON string in the file
@@ -924,8 +1046,10 @@ def word_settings():
         else:
           print("Please enter a valid input.")
 
-    def toggle_specific_word():
-
+    def toggle_specific_word() -> None:
+      """
+       Toggles specific words on/off
+      """
       # Open the file in read mode
       with open("../text_files/wordlist.txt", "r") as f:
         # Parse the JSON string in the file
@@ -973,8 +1097,10 @@ def word_settings():
         if word_input.lower().strip() == 'q':
           break
 
-    def toggle_specific_idiom_proverbs():
-
+    def toggle_specific_idiom_proverbs() -> None:
+      """
+       Toggles specific idioms-proverbs on/off
+      """
       # Open the file in read mode
       with open("../text_files/wordlist.txt", "r") as f:
         # Parse the JSON string in the file
@@ -1112,6 +1238,7 @@ def word_settings():
               print("\n" + Fore.RED + "5. Exit\n" + Style.RESET_ALL)
               
               if counter == 1:
+                #Error message
                 counter = 0
                 time.sleep(0.04)
                 print("Please choose from options" + Fore.GREEN + " 1 - 5 " + Style.RESET_ALL + "only.\n")
@@ -1129,11 +1256,14 @@ def word_settings():
               elif toggle_input == 5:
                 break
               else:
+                #Clears screen
                 os.system('cls' if os.name == 'nt' else 'clear')
                 counter = 1
 
             except ValueError:
+              #Clears screen
               os.system('cls' if os.name == 'nt' else 'clear')
+              #Returns to error message
               counter = 1
 
         elif userInput == 3:
@@ -1141,6 +1271,7 @@ def word_settings():
         else:
           counter = 1
       except ValueError:
+        #Returns to error message
         os.system('cls' if os.name == 'nt' else 'clear')
         counter = 1
 
@@ -1206,8 +1337,10 @@ def word_settings():
       os.system('cls' if os.name == 'nt' else 'clear')
       counter = 1
 
-def change_settings():
-  
+def change_settings() -> None:
+    """
+       changes game settings
+      """
     with open("../text_files/game-settings.txt", "r") as f:
       # Parse the JSON string in the file
       data = json.loads(f.read())
@@ -1336,7 +1469,10 @@ def change_settings():
         os.system('cls' if os.name == 'nt' else 'clear')
         counter = 1
 
-def print_report():
+def print_report() -> None:
+  """
+       Prints a report based on admin's specified start and end dates
+      """
   while True:
      try:
       # Read in the start and end dates from the user
@@ -1374,10 +1510,12 @@ def print_report():
       for game in games:
             # Convert the date string to a datetime object
             date = datetime.datetime.strptime(game["date"], "%d-%m-%y")
+            #If start date is less current than end_date, it will print from least current to most current
             if start_date <= date <= end_date:
               time.sleep(0.04)
               print(f"{game['name']}\t\t{game['points']}\t\t{game['date']}")
             elif start_date >= date >= end_date:
+              #If start date is more current than end_date, it will print from most current to least current
               time.sleep(0.04)
               print(f"{game['name']}\t\t{game['points']}\t\t{game['date']}")
           
