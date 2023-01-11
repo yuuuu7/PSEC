@@ -38,105 +38,105 @@
         "word": "abstemious",
         "meaning": "abstaining from or moderation in the consumption of food and drink",
         "type": "Word",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     },
     {
         "word": "insouciance",
         "meaning": "a lack of concern or care; nonchalance",
         "type": "Word",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     },
     {
         "word": "fastidious",
         "meaning": "paying great attention to detail; meticulous",
         "type": "Word",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     },
     {
         "word": "extemporize",
         "meaning": "speak, perform, or produce (something) with little or no preparation",
         "type": "Word",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     },
     {
         "word": "magnanimous",
         "meaning": "unselfishly generous",
         "type": "Word",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     },
     {
         "word": "once in a blue moon",
         "meaning": "rarely",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Simple"
     },
     {
         "word": "curiosity killed the cat",
         "meaning": "being too curious can lead to trouble",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Simple"
     },
     {
         "word": "beating around the bush",
         "meaning": "not speaking directly about a topic",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Simple"
     },
     {
         "word": "beating a dead horse",
         "meaning": "to continue discussing or trying to do something that has already been unsuccessful",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Simple"
     },
     {
         "word": "time heals all wounds",
         "meaning": "eventually everything will be okay",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Simple"
     },
     {
         "word": "you cant make an omelette without breaking a few eggs",
         "meaning": "in order to achieve something, it is necessary to accept that there may be negative consequences or sacrifices",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     },
     {
         "word": "the pen is mightier than the sword",
         "meaning": "the power of words and communication is greater than physical force or violence",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     },
     {
         "word": "a bird in the hand is worth two in the bush",
         "meaning": "something you have is worth more than something you may have in the future",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     },
     {
         "word": "where there is smoke there is fire",
         "meaning": "there is likely to be a problem or situation if there are signs or indications of it",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     },
     {
         "word": "the best things in life are free",
         "meaning": "the most valuable or enjoyable things in life do not have a financial cost",
         "type": "Idioms-Proverbs",
-        "enabled": "on",
+        "enabled": "off",
         "difficulty": "Complex"
     }
 ]
