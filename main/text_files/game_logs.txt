@@ -23,10 +23,5 @@
         "name": "Yu",
         "points": 8,
         "date": "28-12-22"
-    },
-    {
-        "name": "yuliang",
-        "points": 14,
-        "date": "02-01-23"
     }
 ]

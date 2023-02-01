@@ -78,7 +78,7 @@ def is_valid_username(input_str, authorized_chars) -> bool:
   # Iterate over the list of dictionaries
   for player in data:
       # Check if the username is present in the data
-      if input_str == player['name']:
+      if input_str == player['name'].lower():
         print("Sorry this username already exists, try a different username.")
         # The username is present in the data
         return False
